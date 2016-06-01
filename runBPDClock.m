@@ -55,6 +55,7 @@ global w slack subject facenumC blockC emotionC rewardC ITIC experiment totalBlo
 %screenResolution=[1600 1200];
 %screenResolution=[1440 900]; %new eyelab room
 %screenResolution=[1680 1050]; %mac laptop
+%screenResolution=[1900 1200]; %jon res
 screenResolution=[1024 768]; %scanner res
 
 textSize=24; %font size for intructions etc.
@@ -127,6 +128,12 @@ experiment{ITIC} = reshape(subject.runITIs',[],1);
 %     %do not reverse block codes since this should always be ascending
 % end
 
+
+
+%There should be a if command here where this only happens if run==1
+%Test this further...
+
+
 %Use latin square design to counterbalnce subjects
 [m_idx,r_idx]=latsq(6);
 grp_num = num2str(subject.group_id);
@@ -134,6 +141,7 @@ m_idx = m_idx(latin_square_struct.(['grp_' grp_num])(end),:);
 %m_idx = m_idx(subject.group_id,:);
 blockIndices = reshape(1:length(experiment{blockC}), [], 6);
 blockIndices = reshape(blockIndices(:,m_idx), 1, []);
+
 
 %Counter balance based on group
 counter_balance
@@ -218,10 +226,14 @@ try
     KbName('UnifyKeyNames');
     
     % Set keys.
-    %spaceKey  = KbName('SPACE');
+    spaceKey  = KbName('SPACE');
     escKey  = KbName('ESCAPE');
     caretKey = KbName('6^'); %used for scanner trigger
     equalsKey = KbName('=+'); %used for scanner trigger
+    indexFingerKey = KbName('2@');
+    
+    %Restrict only these keys in scanner
+    RestrictKeysForKbCheck([spaceKey,escKey,caretKey,equalsKey,indexFingerKey]); 
     
     %% preload textures
     % makes assumption that images for every face of every facenumber exists
