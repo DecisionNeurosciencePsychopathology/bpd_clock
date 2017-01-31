@@ -235,6 +235,14 @@ try
     %Restrict only these keys in scanner
     RestrictKeysForKbCheck([spaceKey,escKey,caretKey,equalsKey,indexFingerKey]); 
     
+    %Disable all other buttons on glove
+    thumbKey1 = KbName('1!');
+    thumbKey2 = KbName('0)');
+    middleFingerKey = KbName('3#');
+    ringFingerKey = KbName('4$');
+    pinkyFingerKey = KbName('5%');
+    DisableKeysForKbCheck([thumbKey1,thumbKey2,middleFingerKey,ringFingerKey,pinkyFingerKey]);
+    
     %% preload textures
     % makes assumption that images for every face of every facenumber exists
     for emo=unique(experiment{emotionC})'
@@ -550,8 +558,9 @@ sca
         keyPressed=0;
         
         %listen to 1-5 (right button glove)
-        validKeys=[ KbName('1!') KbName('2@') KbName('3#')...
-                    KbName('4$') KbName('5%') ];
+%         validKeys=[ KbName('1!') KbName('2@') KbName('3#')...
+%                     KbName('4$') KbName('5%') ];
+          validKeys=KbName('2@');
         
         % Loop while there is time.
         while remainingMS > 0
@@ -585,11 +594,13 @@ sca
                     error('quit early (on %d)\n',i)
                 end
                 
+                
                 if any(keyCode(validKeys))               
                     %if keyCode(spaceKey)
                     keyPressed=1; %person responded!
                     break
                 end
+                
             end
             
             %% super debug mode -- show EV for reponse times
